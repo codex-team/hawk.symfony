@@ -1,0 +1,7 @@
+services:
+  HawkBundle\Monolog\Handler:
+    public: false
+    arguments:
+      $level: 'error'
+    tags:
+      - { name: monolog.handler }
