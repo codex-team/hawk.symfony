@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace HawkBundle;
 
-use GuzzleHttp\Client;
 use Hawk\Addons\Headers;
 use Hawk\EventPayloadBuilder;
+use Hawk\Handler;
 use Hawk\Options;
 use Hawk\Serializer;
 use Hawk\StacktraceFrameBuilder;
-use HawkBundle\Transport\GuzzlePromisesTransport;
+use Hawk\Transport\TransportInterface;
 
 /**
  * Hawk PHP Catcher SDK
@@ -29,10 +29,10 @@ final class Catcher
     private $handler;
 
     /**
-     * @param array  $options
-     * @param Client $client
+     * @param array              $options
+     * @param TransportInterface $transport
      */
-    public function __construct(array $options, Client $client)
+    public function __construct(array $options, TransportInterface $transport)
     {
         $options = new Options($options);
 
@@ -48,9 +48,7 @@ final class Catcher
         $builder = new EventPayloadBuilder($stacktraceBuilder);
         $builder->registerAddon(new Headers());
 
-        $transport = new GuzzlePromisesTransport($options->getUrl(), $client);
-
-        $this->handler = new HawkHandler($options, $transport, $builder);
+        $this->handler = new Handler($options, $transport, $builder);
 
         $this->handler->registerErrorHandler();
         $this->handler->registerExceptionHandler();
@@ -64,7 +62,7 @@ final class Catcher
      */
     public function setUser(array $user): self
     {
-        $this->handler->withUser($user);
+        $this->handler->setUser($user);
 
         return $this;
     }
@@ -76,7 +74,7 @@ final class Catcher
      */
     public function setContext(array $context): self
     {
-        $this->handler->withContext($context);
+        $this->handler->setContext($context);
 
         return $this;
     }

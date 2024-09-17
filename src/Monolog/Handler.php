@@ -9,8 +9,10 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 
-class Handler extends AbstractProcessingHandler
+final class Handler extends AbstractProcessingHandler
 {
+    use HandlerTrait;
+
     private $catcher;
 
     public function __construct(Catcher $catcher, $level = Logger::ERROR, bool $bubble = true)
@@ -20,10 +22,7 @@ class Handler extends AbstractProcessingHandler
         $this->catcher = $catcher;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function write(array $record): void
+    public function doWrite($record): void
     {
         $data = [
             'level' => $record['level'],

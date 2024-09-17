@@ -7,17 +7,11 @@ namespace HawkBundle\Transport;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Hawk\Event;
+use Hawk\Options;
 use Hawk\Transport\TransportInterface;
 
 class GuzzlePromisesTransport implements TransportInterface
 {
-    /**
-     * URL to send occurred event
-     *
-     * @var string
-     */
-    private $url;
-
     /**
      * Guzzle Client
      *
@@ -28,11 +22,10 @@ class GuzzlePromisesTransport implements TransportInterface
     /**
      * CurlTransport constructor.
      *
-     * @param string $url
+     * @param Client $client
      */
-    public function __construct(string $url, Client $client)
+    public function __construct(Client $client)
     {
-        $this->url = $url;
         $this->client = $client;
     }
 
@@ -41,15 +34,15 @@ class GuzzlePromisesTransport implements TransportInterface
      */
     public function getUrl(): string
     {
-        return $this->url;
+        return (new Options())->getUrl();
     }
 
     /**
      * @inheritDoc
      */
-    public function send(Event $event): mixed
+    public function send(Event $event)
     {
-        $promise = $this->client->postAsync($this->url, [
+        $promise = $this->client->postAsync($this->getUrl(), [
             'json' => $event->jsonSerialize(),
             'headers' => [
                 'Content-Type' => 'application/json'

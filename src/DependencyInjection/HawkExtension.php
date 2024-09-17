@@ -7,6 +7,7 @@ namespace HawkBundle\DependencyInjection;
 use GuzzleHttp\Client;
 use HawkBundle\Catcher;
 use HawkBundle\Monolog\Handler;
+use HawkBundle\Transport\GuzzlePromisesTransport;
 use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,10 +32,14 @@ class HawkExtension extends Extension
         // Set parameters and register services
         $container->setParameter('hawk.integration_token', $config['integration_token']);
 
+        // Register TransportInterface
+        $container->register(GuzzlePromisesTransport::class)
+            ->setArgument('$client', new Reference(Client::class));
+
         // Register Catcher
         $container->register(Catcher::class)
             ->setArgument('$options', ['integrationToken' => $config['integration_token']])
-            ->setArgument('$client', new Reference(Client::class));
+            ->setArgument('$transport', new Reference(GuzzlePromisesTransport::class));
 
         // Register Monolog\Handler
         $container->register(Handler::class)
