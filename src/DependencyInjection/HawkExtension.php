@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HawkBundle\DependencyInjection;
 
-use GuzzleHttp\Client;
 use HawkBundle\Catcher;
 use HawkBundle\Monolog\Handler;
 use HawkBundle\Transport\GuzzlePromisesTransport;
@@ -33,8 +32,7 @@ class HawkExtension extends Extension
         $container->setParameter('hawk.integration_token', $config['integration_token']);
 
         // Register TransportInterface
-        $container->register(GuzzlePromisesTransport::class)
-            ->setArgument('$client', new Reference(Client::class));
+        $container->register(GuzzlePromisesTransport::class);
 
         // Register Catcher
         $container->register(Catcher::class)
