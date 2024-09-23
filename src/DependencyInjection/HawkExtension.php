@@ -42,6 +42,7 @@ class HawkExtension extends Extension
         // Register Monolog\Handler
         $container->register(Handler::class)
             ->setArgument('$catcher', new Reference(Catcher::class))
+            ->setArgument('$request', new Reference('request_stack'))
             ->setArgument('$level', Logger::ERROR)
             ->addTag('monolog.handler');
     }

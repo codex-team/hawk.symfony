@@ -54,6 +54,9 @@
 # PhpStorm
 /.idea
 
+# Composer lock file
+/composer.lock
+
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
