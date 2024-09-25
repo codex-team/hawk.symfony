@@ -45,6 +45,12 @@ final class Handler extends AbstractProcessingHandler
 
     private function collectRequestInfo(): array
     {
+        $currentRequest = $this->request->getCurrentRequest();
+
+        if ($currentRequest === null) {
+            return [];
+        }
+
         $factory = new PsrHttpFactory(
             Psr17FactoryDiscovery::findServerRequestFactory(),
             Psr17FactoryDiscovery::findStreamFactory(),
@@ -52,9 +58,7 @@ final class Handler extends AbstractProcessingHandler
             Psr17FactoryDiscovery::findResponseFactory()
         );
 
-        $request = $factory->createRequest(
-            $this->request->getCurrentRequest()
-        );
+        $request = $factory->createRequest($currentRequest);
 
         return [
             'method' => $request->getMethod(),
