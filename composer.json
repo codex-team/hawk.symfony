@@ -9,7 +9,7 @@
     "php": "^7.2 || ^8.0",
     "monolog/monolog": "^2.2 || ^3.0",
     "guzzlehttp/guzzle": "^6.0 || ^7.0",
-    "codex-team/hawk.php": "^2.2.2",
+    "codex-team/hawk.php": "^2.2.3",
     "jean85/pretty-package-versions": "^1.5 || ^2.0",
     "symfony/config": "^4.4.20||^5.0.11||^6.0||^7.0",
     "symfony/dependency-injection": "^4.4.20||^5.0.11||^6.0||^7.0",
