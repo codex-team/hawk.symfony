@@ -3,7 +3,7 @@
   "description": "Symfony errors Catcher module for Hawk.so",
   "keywords": ["hawk", "php", "error", "catcher", "monolog", "symfony"],
   "type": "library",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "require": {
     "php": "^7.2 || ^8.0",
