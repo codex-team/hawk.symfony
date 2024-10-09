@@ -24,8 +24,9 @@ HAWK_TOKEN=<your_token_from_the_control_panel>
 
 Create a configuration file at `config/packages/hawk.yaml` with the following content:
 
-```php
-HawkBundle\HawkBundle::class => ['all' => true]
+```yaml
+hawk:
+  integration_token: '%env(HAWK_TOKEN)%'
 ```
 
 In the `config/packages/monolog.yaml` file, specify the handler settings under the appropriate section (`dev` or `prod`):
