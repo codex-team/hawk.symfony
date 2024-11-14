@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HawkBundle;
 
 use Hawk\Addons\Headers;
+use Hawk\Addons\Environment;
 use Hawk\EventPayloadBuilder;
 use Hawk\Handler;
 use Hawk\Options;
@@ -47,6 +48,7 @@ final class Catcher
          */
         $builder = new EventPayloadBuilder($stacktraceBuilder);
         $builder->registerAddon(new Headers());
+        $builder->registerAddon(new Environment());
 
         $this->handler = new Handler($options, $transport, $builder);
 
