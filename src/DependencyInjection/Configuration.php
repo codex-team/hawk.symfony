@@ -17,10 +17,13 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('integration_token')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
+                ->scalarNode('integration_token')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('before_send_service')
+                    ->defaultNull()
+                ->end()
             ->end()
         ;
 
