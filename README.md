@@ -95,6 +95,9 @@ public function test()
 ```
 
 ### Example: BeforeSendService Class
+
+If you want to process or modify error data before sending it to Hawk, you can define a custom service by implementing the `BeforeSendServiceInterface`.
+
 ```php
 <?php
 
@@ -105,14 +108,20 @@ use HawkBundle\Service\BeforeSendServiceInterface;
 
 class BeforeSendService implements BeforeSendServiceInterface
 {
-    public function __invoke(EventPayload $eventPayload): EventPayload
+    public function __invoke(EventPayload $eventPayload): ?EventPayload
     {
         $user = $eventPayload->getUser();
         
+        // Modify or add additional data to the error report
         if (!empty($user['email'])){
             unset($user['email']);
         
             $eventPayload->setUser($user);
+        }
+        
+        // Return null to prevent the event from being sent to Hawk
+        if ($eventPayload->getContext()['skip_sending'] ?? false) {
+            return null;
         }
 
         return $eventPayload;
