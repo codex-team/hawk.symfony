@@ -27,6 +27,9 @@ Create a configuration file at `config/packages/hawk.yaml` with the following co
 ```yaml
 hawk:
   integration_token: '%env(HAWK_TOKEN)%'
+
+  # Optional: Configure a custom beforeSend service
+  before_send_service: 'App\Hawk\BeforeSendService'
 ```
 
 In the `config/packages/monolog.yaml` file, specify the handler settings under the appropriate section (`dev` or `prod`):
@@ -87,6 +90,32 @@ public function test()
         // The code where you need to catch the error
     } catch (\Exception $exception) {
         $this->catcher->sendException($exception);
+    }
+}
+```
+
+### Example: BeforeSendService Class
+```php
+<?php
+
+namespace App\Hawk;
+
+use Hawk\EventPayload;
+use HawkBundle\Service\BeforeSendServiceInterface;
+
+class BeforeSendService implements BeforeSendServiceInterface
+{
+    public function __invoke(EventPayload $eventPayload): EventPayload
+    {
+        $user = $eventPayload->getUser();
+        
+        if (!empty($user['email'])){
+            unset($user['email']);
+        
+            $eventPayload->setUser($user);
+        }
+
+        return $eventPayload;
     }
 }
 ```
