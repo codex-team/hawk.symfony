@@ -6,6 +6,7 @@ namespace HawkBundle\DependencyInjection;
 
 use HawkBundle\Catcher;
 use HawkBundle\Monolog\Handler;
+use HawkBundle\Service\BeforeSendServiceInterface;
 use HawkBundle\Transport\GuzzlePromisesTransport;
 use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
@@ -34,9 +35,19 @@ class HawkExtension extends Extension
         // Register TransportInterface
         $container->register(GuzzlePromisesTransport::class);
 
+        $options = ['integrationToken' => $config['integration_token']];
+
+        if (
+            isset($config['before_send_service'])
+            && class_exists($config['before_send_service'])
+            && is_subclass_of($config['before_send_service'], BeforeSendServiceInterface::class)
+        ) {
+            $options['beforeSend'] = new Reference($config['before_send_service']);
+        }
+
         // Register Catcher
         $container->register(Catcher::class)
-            ->setArgument('$options', ['integrationToken' => $config['integration_token']])
+            ->setArgument('$options', $options)
             ->setArgument('$transport', new Reference(GuzzlePromisesTransport::class));
 
         // Register Monolog\Handler
