@@ -3,11 +3,11 @@
   "description": "Symfony errors Catcher module for Hawk.so",
   "keywords": ["hawk", "php", "error", "catcher", "monolog", "symfony"],
   "type": "library",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "require": {
     "php": "^7.2 || ^8.0",
-    "codex-team/hawk.php": "^2.2.5",
+    "codex-team/hawk.php": "^2.2.9",
     "guzzlehttp/guzzle": "^6.0 || ^7.0",
     "guzzlehttp/psr7": "^2.1.1",
     "jean85/pretty-package-versions": "^1.5 || ^2.0",
